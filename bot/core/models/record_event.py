@@ -16,4 +16,3 @@ class RecordEvent(Base):
     profile: Mapped["Profile"] = relationship(back_populates="record")
 
     event: Mapped["Event"] = relationship(back_populates="record")
-

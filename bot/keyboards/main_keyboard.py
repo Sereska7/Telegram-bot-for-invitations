@@ -1,7 +1,4 @@
-from aiogram.types import (
-    ReplyKeyboardMarkup,
-    KeyboardButton
-)
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 
 key_main = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text="Расписание")],
@@ -10,5 +7,5 @@ key_main = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text="Расписан�
                                          [KeyboardButton(text="Мой профиль")],
                                          [KeyboardButton(text="Знакомства"),
                                           KeyboardButton(text="FAQ")]],
-                               resize_keyboard=True,
-                               input_field_placeholder='Выберите пункт меню...')
+                               resize_keyboard=True
+                               )

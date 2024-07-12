@@ -1,9 +1,4 @@
-__all__ = (
-    "Event"
-    "Profile",
-    "User",
-    "RecordEvent"
-)
+__all__ = ("Event" "Profile", "User", "RecordEvent")
 
 from .event import Event
 from .profile_user import Profile

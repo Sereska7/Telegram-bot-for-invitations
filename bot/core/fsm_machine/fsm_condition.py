@@ -14,3 +14,7 @@ class SetEvent(StatesGroup):
 
 class CodePerson(StatesGroup):
     code = State()
+
+
+class UserID(StatesGroup):
+    user_tg_id = State()

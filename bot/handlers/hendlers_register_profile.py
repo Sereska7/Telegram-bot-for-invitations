@@ -3,7 +3,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 import bot.core.requests as request
-from bot.core.fsm_machine.fsm_register import RegisterProfileState
+import bot.core.utils as util
+from bot.core.fsm_machine.fsm_condition import RegisterProfileState
 from bot.core.utils import generate_unique_code
 
 
@@ -18,25 +19,18 @@ async def start_register(message: Message, state: FSMContext):
         await state.set_state(RegisterProfileState.first_name)
         await message.reply("Привет! Давай начнем регистрацию. Как тебя зовут?")
     else:
-        result = []
-        for object_profile in profile:
-            profile_text = (
-                f"Имя: {object_profile['first_name']}\n"
-                f"Фамилия: {object_profile['last_name']}\n"
-                f"Телефон: {object_profile['phone_number']}\n"
-                f"Должность: {object_profile["position"]}\n"
-                f"Уникальный код: {object_profile["unique_id"]}"
-            )
-            result.append(profile_text)
-        text_profile = "".join(result)
-        await message.answer(f"Вы уже зарегистрированны\n\nВаши данный:\n{text_profile}")
+        list_texts = await util.conversion_to_text_for_profile_by_userid(profile)
+        text_profile = "".join(list_texts)
+        await message.answer(
+            f"Вы уже зарегистрированны\n\nВаши данный:\n{text_profile}"
+        )
 
 
 @router.message(RegisterProfileState.first_name)
 async def register_first_name(message: Message, state: FSMContext):
     await state.update_data(first_name=message.text)
     await state.set_state(RegisterProfileState.last_name)
-    await message.answer("Теперь. Напиши свою фамилию")
+    await message.answer("Теперь, напиши свою фамилию")
 
 
 @router.message(RegisterProfileState.last_name)
@@ -65,7 +59,7 @@ async def register_position(message: Message, state: FSMContext):
         last_name=date["last_name"],
         phone_number=date["phone_number"],
         position=date["position"],
-        unique_id=unique_id
+        unique_id=unique_id,
     )
     await message.answer(text=result)
     await state.clear()
