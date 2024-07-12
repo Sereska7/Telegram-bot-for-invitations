@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "structure-for-bot"
+version = "0.1.0"
+description = ""
+authors = ["Sereska7 <sergo_ryzakov@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+aiogram = "^3.10.0"
+sqlalchemy = "^2.0.31"
+asyncpg = "^0.29.0"
+pydantic = "^2.8.2"
+pydantic-settings = "^2.3.4"
+alembic = "^1.13.2"
+asyncio = "^3.4.3"
+black = "^24.4.2"
+python-dotenv = "^1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
