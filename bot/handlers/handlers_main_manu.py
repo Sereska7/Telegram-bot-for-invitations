@@ -91,6 +91,9 @@ async def get_person(message: Message, state: FSMContext):
                 list_texts = await util.conversion_to_text_for_profile(profile_person)
                 text_profile = "".join(list_texts)
                 await message.answer(f"Данные пользователя:\n\n{text_profile}")
+        else:
+            await message.answer(text="Вы ввели код не корректно\nПовторите попытку")
+            await look_for_person(message, state)
     else:
         await message.answer(text="Вы ввели код не корректно\nПовторите попытку")
         await look_for_person(message, state)
