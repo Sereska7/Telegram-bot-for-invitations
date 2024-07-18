@@ -19,7 +19,7 @@ async def start_register(message: Message, state: FSMContext):
         await state.set_state(RegisterProfileState.first_name)
         await message.reply("Привет! Давай начнем регистрацию. Как тебя зовут?")
     else:
-        list_texts = await util.conversion_to_text_for_profile_by_userid(profile)
+        list_texts = await util.conversion_to_text_for_profile(profile)
         text_profile = "".join(list_texts)
         await message.answer(
             f"Вы уже зарегистрированны\n\nВаши данный:\n{text_profile}"

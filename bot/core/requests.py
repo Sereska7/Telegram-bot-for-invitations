@@ -88,8 +88,11 @@ async def get_profile_id(user_id: int):
 
 async def get_records(profile_id: int, offset: int = 0):
     async with db.session_factory() as session:
-        records = select(RecordEvent.__table__.columns).where(
-            RecordEvent.profile_id == profile_id
-        ).offset(offset).limit(2)
+        records = (
+            select(RecordEvent.__table__.columns)
+            .where(RecordEvent.profile_id == profile_id)
+            .offset(offset)
+            .limit(2)
+        )
         result = await session.execute(records)
         return result.mappings().all()

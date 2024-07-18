@@ -15,12 +15,9 @@ router = Router()
 @router.message(CommandStart())
 async def start_message(message: Message):
     await request.add_user(
-        tg_id=message.from_user.id,
-        name=message.from_user.first_name
+        tg_id=message.from_user.id, name=message.from_user.first_name
     )
-    await message.answer(text="Приветсвенное сообщение",
-                         reply_markup=kb_main.key_main
-                         )
+    await message.answer(text="Приветсвенное сообщение", reply_markup=kb_main.key_main)
 
 
 @router.callback_query(F.data.startswith("event:"))

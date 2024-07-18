@@ -34,7 +34,9 @@ async def keyboard_record():
 async def load_more_my_events(offset: int = 0):
     keyboard = InlineKeyboardBuilder()
     keyboard.add(
-        InlineKeyboardButton(text="Load more", callback_data=f"load_events:{offset + 2}")
+        InlineKeyboardButton(
+            text="Load more", callback_data=f"load_events:{offset + 2}"
+        )
     )
     return keyboard.adjust(2).as_markup()
 

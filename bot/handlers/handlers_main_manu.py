@@ -41,14 +41,16 @@ async def load_more_events(callback_query: CallbackQuery):
 async def send_profile(message: Message):
     user = await request.get_user_id(message.from_user.id)
     profile = await request.get_profile(user_id=user)
-    list_texts = await util.conversion_to_text_for_profile_by_userid(profile)
+    list_texts = await util.conversion_to_text_for_profile(profile)
     text_profile = "".join(list_texts)
     await message.answer(f"Ваши данный:\n\n{text_profile}")
 
 
 @router.message(F.text == "Мои мероприятия")
 async def get_my_records(message: Message, user_tg_id: int = None, offset: int = 0):
-    user = await request.get_user_id(message.from_user.id if not user_tg_id else user_tg_id)
+    user = await request.get_user_id(
+        message.from_user.id if not user_tg_id else user_tg_id
+    )
     profile = await request.get_profile_id(user)
     records = await request.get_records(profile.id, offset)
     events = []
@@ -57,7 +59,9 @@ async def get_my_records(message: Message, user_tg_id: int = None, offset: int =
     list_texts = await util.conversion_to_text_for_event_id_min(events)
     full_text = "\n".join(list_texts)
     if full_text.strip():
-        await message.answer(text=full_text, reply_markup=await load_more_my_events(offset))
+        await message.answer(
+            text=full_text, reply_markup=await load_more_my_events(offset)
+        )
     else:
         await message.answer(text="No events found.")
 
@@ -84,11 +88,13 @@ async def get_person(message: Message, state: FSMContext):
             await state.update_data(code=message.text)
             date = await state.get_data()
             un_code = date["code"]
-            profile_person = await request.get_profile_by_code(int(un_code))
-            if not profile_person:
-                await message.answer(text="Пользователь не найден", reply_markup=await button_reload())
+            profile = await request.get_profile_by_code(int(un_code))
+            if not profile:
+                await message.answer(
+                    text="Пользователь не найден", reply_markup=await button_reload()
+                )
             else:
-                list_texts = await util.conversion_to_text_for_profile(profile_person)
+                list_texts = await util.conversion_to_text_for_profile(profile)
                 text_profile = "".join(list_texts)
                 await message.answer(f"Данные пользователя:\n\n{text_profile}")
         else:
@@ -102,5 +108,3 @@ async def get_person(message: Message, state: FSMContext):
 @router.callback_query(F.data.startswith("reload_code"))
 async def reload_code(callback_query: CallbackQuery, state: FSMContext):
     await look_for_person(callback_query.message, state)
-
-
